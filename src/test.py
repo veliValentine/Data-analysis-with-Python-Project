@@ -6,29 +6,53 @@ from numpy.random import choice
 import re
 import pandas as pd
 
-def get_codong_usage_table_as_data_frame():
-    #1. We read the whole html page
-    try:
-        with open('codon_usage_table.html') as f:
-            page = f.read()
-    except FileNotFoundError:
-        with open('src/codon_usage_table.html') as f:
-            page = f.read()
+# python
+import pandas as pd
+from statistics import stdev, variance
+from math import sqrt
+from scipy.stats import norm
 
-    start_index = page.find('<pre>')+5
-    end_index = page.find('</pre>')
-#2. slice the information off the page (it is between <pre> and </pre> html-attributes)
-    data = page[start_index:end_index].strip()
-#3. get an array containing information per RNA-triplet. Example after the next line data[0] = UUU F 0.46 17.6 (714298)
-    data = re.findall(r'[a-zA-Z]{3}\s[a-zA-Z|*]{1}\s[0-9]*.[0-9]*\s*[0-9]*.[0-9]*\s*\(\s?[0-9]*\)', data)
-    # we split the data into 2 dimensional array
-    data = [d.replace('( ', '(').split() for d in data]
-    #4. put everythin into pandas dataframe
-    df = pd.DataFrame(data, columns=['triplet', 'amino acid',  'fraction', 'frequency', 'number'])
-    #5 Strip number column from parentheses
-    df['number'] = df['number'].apply(lambda s: s[1:-1])
-    #6 convert dtypes of fraction and frequency to float and number to int
-    df = df.astype({'fraction':float, 'frequency':float, 'number':int})
-    return df
+def context_list(s, k):
+    dic = dict()
+    for start_i in range(len(s)-k + 1):
+        substring = s[start_i:start_i+k+1]
+        l = len(substring)
+        if(l>k):
+            key, value = substring[0:-1], substring[-1]
+            print(substring, key, value)
+            if(key not in dic.keys()):
+                dic[key] = value
+            else:
+                dic[key] = dic[key] + value
+    return dic
 
-get_codong_usage_table_as_data_frame()
+if __name__ == '__main__':
+    k = 2
+    s = 'TAGCGTATAATGTGGGAGTGTCTGCTGCCACCGGTGCTTACAGTTAGGCGTCTAGCCATGAAACTCCCGGAATCGGCAAAACATATTGGTCAAACTCACC'
+    v = 'TGTGGAGGCGTCCTTCGAAGTCTGCAAGGCATTGTCCCAGAAGCGTATACTATACAGAAAGACCTTGCGTCACTGGTACCGTACGGTCATATC'
+    #C     CA 2    AA 3  CC 1 
+    # TA 1 AG 2 GG 2 CT 2 AT 1 GT 3 TC 1 TG 3 GC 2 AC 2 
+    #print(s)
+    #s = 'ATGATATCATCGACGATCTAG'
+    d = context_list(s, 2)
+    sum = 0
+    
+    for key in d.keys():
+        print(key, d[key], len(d[key]))
+        sum += len(d[key])
+    print('sum', sum)
+
+    s_dic = dict()
+    for c in s:
+        if(c not in s_dic.keys()):
+            s_dic[c] = 0
+        s_dic[c] = s_dic[c] + 1
+    #print(s_dic)
+    s_dic = dict()
+    for c in v:
+        if(c not in s_dic.keys()):
+            s_dic[c] = 0
+        s_dic[c] = s_dic[c] + 1
+    #print(s_dic)
+    #{'T': 24, 'A': 26, 'G': 25, 'C': 25}
+    #{'T': 23, 'G': 24, 'A': 23, 'C': 23}
