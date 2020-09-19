@@ -571,7 +571,7 @@ class TestContextList(unittest.TestCase):
             self.assertLessEqual(len(d), n-k)
             self.assertEqual(sum([len(val) for key,val in d.items()]), n-k)
 
-'''
+
 @points('p07-01.11')
 class TestContextProbabilities(unittest.TestCase):
 
@@ -674,7 +674,7 @@ class TestGenerateMarkov(unittest.TestCase):
         mc = MarkovChain(zeroth, kth)
         self.assertEqual(mc.generate(20), "A"*20,
             msg=f"With zeroth: {zeroth} and kth: {kth}, the generated sequence should be {'A'*20}")
-
+'''
 
 @points('p07-01.13')
 class TestPseudoCounts(unittest.TestCase):
