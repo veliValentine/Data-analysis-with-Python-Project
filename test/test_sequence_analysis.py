@@ -624,7 +624,7 @@ class TestContextProbabilities(unittest.TestCase):
         self.assertAlmostEqual(d[""], c, places=3)
 
 
-@points('p07-01.12')
+@points('p07-01.12') # 63%
 class TestGenerateMarkov(unittest.TestCase):
     zeroth = {'A': 0.2, 'C': 0.19, 'T': 0.31, 'G': 0.3}
     kth = {'GT': {'A': 1.0, 'C': 0.0, 'T': 0.0, 'G': 0.0},
@@ -676,7 +676,7 @@ class TestGenerateMarkov(unittest.TestCase):
             msg=f"With zeroth: {zeroth} and kth: {kth}, the generated sequence should be {'A'*20}")
 '''
 
-@points('p07-01.13')
+@points('p07-01.13') # 68%
 class TestPseudoCounts(unittest.TestCase):
 
     def test_order_0(self):
@@ -777,7 +777,7 @@ class TestPseudoCounts(unittest.TestCase):
                 msg="Generating sequences should never fail when using pseudo probabilities.")
 
 
-@points('p07-01.14')
+@points('p07-01.14') # 73%
 class TestMarkovChainProbability(unittest.TestCase):
     kth = context_pseudo_probabilities("ATGATATCATCGACGATGTAG", 2)
     zeroth = context_pseudo_probabilities("ATGATATCATCGACGATGTAG", 0)[""]
@@ -822,7 +822,7 @@ class TestMarkovChainProbability(unittest.TestCase):
             self.assertAlmostEqual(mp.probability("".join(kmer)), 0.25**4)
 
 
-@points('p07-01.15')
+@points('p07-01.15') # %78
 class TestMarkovChainLogProbability(unittest.TestCase):
 
     def test_first(self):
@@ -850,7 +850,7 @@ class TestMarkovChainLogProbability(unittest.TestCase):
             self.assertAlmostEqual(mc.log_probability("".join(kmer)), -2*n)
 
 
-@points('p07-01.16')
+@points('p07-01.16') # 84%
 class TestLowSpaceRequirement(unittest.TestCase):
 
     def test_first(self):
@@ -927,7 +927,7 @@ class TestLowSpaceRequirement(unittest.TestCase):
         self.assertAlmostEqual(d["CC"]['A'], 0.250000, places=places)
 
 
-@points('p07-01.17')
+@points('p07-01.17') # 89%
 class TestSampleFromConcatenation(unittest.TestCase):
 
     def test_length_one(self):
@@ -958,7 +958,7 @@ class TestSampleFromConcatenation(unittest.TestCase):
                 self.assertTrue(TestSlidingWindow.is_subset(s2, "ACGT"), msg="The generated string %s contains non-nucleotide characters!" % s2)
 
 
-@points('p07-01.18')
+@points('p07-01.18') # 94%
 class TestKmerIndex(unittest.TestCase):
 
     def test_first(self):
@@ -974,7 +974,7 @@ class TestKmerIndex(unittest.TestCase):
             self.assertSequenceEqual(positions, range(n - k + 1))
 
 
-@points('p07-01.19')
+@points('p07-01.19') # 100%
 class TestKullbackLeibler(unittest.TestCase):
 
     def test_first(self):
